@@ -1,0 +1,6 @@
+rabbit_endpoint: amqp://guest:guest@localhost:5672/
+rabbit_exchange: SignedDocuments
+fetch_count: 100
+xray_base: http://localhost:8888/api
+journal_id: 1
+check_timestamp: true

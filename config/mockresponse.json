@@ -1,0 +1,11 @@
+{
+  "id": "some_id_888",
+  "something_else": {
+    "foo": "bar"
+  },
+  "timestamps" : [
+    {
+      "txid" : "some_txid_999"
+    }
+  ]
+}
