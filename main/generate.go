@@ -1,7 +1,7 @@
 package main
 
 import (
-	"log"
+	log "github.com/Sirupsen/logrus"
 	"os"
 	"github.com/streadway/amqp"
 	"github.com/spf13/viper"
@@ -11,6 +11,7 @@ import (
 
 func main() {
 	util.ReadConfig("generator_config")
+	util.SetupLogging("info", "")
 	number_of_messages := getNumberOfMessages()
 
 	rabbit_endpoint := viper.GetString("rabbit_endpoint")
@@ -33,18 +34,18 @@ func main() {
 				ContentType: "application/json",
 				Body: message,
 			})
-		util.FailOnError(err, "Failed to publish a message")
+		util.PanicOnError(err, "Failed to publish a message")
 	}
 	log.Printf("Sent %d messages", number_of_messages)
 }
 
 func getNumberOfMessages() int {
 	if (len(os.Args) < 2) || os.Args[1] == "" {
-		util.Fail("Usage: go run generate.go <number of messages to generate>")
+		log.Panicf("Usage: go run generate.go <number of messages to generate>")
 		return 0
 	} else {
 		n, err := strconv.Atoi(os.Args[1])
-		util.FailOnError(err, "Unable to parse the parameter")
+		util.PanicOnError(err, "Unable to parse the parameter")
 		return n
 	}
 }

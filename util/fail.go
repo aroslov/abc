@@ -1,18 +1,12 @@
 package util
 
 import (
-	"log"
-	"fmt"
+	log "github.com/Sirupsen/logrus"
 )
 
-func FailOnError(err error, msg string) {
+func PanicOnError(err error, msg string) {
 	if err != nil {
-		log.Fatalf("%s: %s", msg, err)
-		panic(fmt.Sprintf("%s: %s", msg, err))
+		log.Panicf("%s: %s", msg, err)
 	}
 }
 
-func Fail(msg string) {
-	log.Fatalf("%s", msg)
-	panic(fmt.Sprintf("%s", msg))
-}

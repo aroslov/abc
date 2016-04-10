@@ -1,6 +1,11 @@
+log_output: consumer.log
+log_level: debug
 rabbit_endpoint: amqp://guest:guest@localhost:5672/
 rabbit_exchange: SignedDocuments
-fetch_count: 100
-xray_base: http://localhost:8888/api
-journal_id: 1
+fetch_count: 1
+xray_base: http://localhost:8888/api # dev
+#xray_base: http://167.114.247.67:8080/api
+journal_id: e99bc43b-f88a-4935-a6e8-5e90bcd43f38
 check_timestamp: true
+xray_access_key: 4f1ccd27-4250-4a64-8977-0b9d60edc68f
+xray_access_secret: eyJraWQiOiJrZXkiLCJhbGciOiJSUzI1NiIsImFjY2Vzc1Rva2VuSWQiOiI0ZjFjY2QyNy00MjUwLTRhNjQtODk3Ny0wYjlkNjBlZGM2OGYifQ.eyJzY29wZXMiOlsiQUNDRVNTX1RPS0VOIl0sImp0aSI6ImJoNmVVZFpkbE9kcWl2NmdNRG4zdXciLCJpYXQiOjE0NjAxODE4MzksImlzcyI6IkFjcm9uaXMgTGVkZ2VyIn0.ZDg-JOHhKChICJS2Z4mqRZgsLnOIkDFJ5-QsaPx7GCt-klA2QS2q0te2Y6zKM4jRtnLBnV4rREQKXTJqXcWZDSslzfArTUIe5Zg2TSzalZBcnq7o4RV2WcBgJ7CvDHy1HrG2aGTLARZ7XHt_GUM9AcQIfLWg-kSxyVDe4yguMsHMLWNIE4mKedsYJUZwxlQxIFuQ43X1KovnN1LTqw3gIruz56xLqdgk0bW5C9spOl8AHwkDp_Jb9ICuhNJ7OXrtPZ5CC0fs0XVRi8tE2NL-JdE3fvsXPV1Hiha3ExJ7bKLqKr6oV43sllss9JrwjiK8PnsHYr7r3kBoPS7WiF7BFQ

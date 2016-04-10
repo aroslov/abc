@@ -57,6 +57,7 @@
       <root url="file://$PROJECT_DIR$/../../streadway/amqp/_examples" />
       <root url="file://$PROJECT_DIR$/../../../golang.org/x/tools/.git" />
       <root url="file://$PROJECT_DIR$/../../../golang.org/x/tools/go/gccgoimporter/testdata" />
+      <root url="file://$PROJECT_DIR$/../../Sirupsen/logrus/.git" />
       <root url="file://$PROJECT_DIR$/../../../golang.org/x/sys/.git" />
       <root url="file://$PROJECT_DIR$/../../kr/pretty/.git" />
       <root url="file://$PROJECT_DIR$/../../spf13/viper/.git" />

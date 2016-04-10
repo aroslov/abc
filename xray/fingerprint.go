@@ -8,6 +8,11 @@ import (
 	"encoding/json"
 )
 
+const (
+	RECORD_FINGERPRINT = "/fingerprints"
+)
+
+
 type Fingerprint struct {
 	Metadata string `json:"metadata"`
 	MetadataContentType string `json:"metadataContentType"`
@@ -31,10 +36,10 @@ func (xray_service XRayService) NewFingerprint(message []byte) (*Fingerprint) {
 
 func (fp Fingerprint) json() ([]byte) {
 	fp_json,err := json.Marshal(fp)
-	util.FailOnError(err, "Unable to create fingerprint")
+	util.PanicOnError(err, "Unable to create fingerprint")
 	return fp_json
 }
 
 func (fp Fingerprint) CreateRecordFingerprint (record_id string) {
-	post(fp.xray_service.base_url + RECORD + "/" + record_id + RECORD_FINGERPRINT, fp.json())
+	fp.xray_service.post(RECORD + "/" + record_id + RECORD_FINGERPRINT, fp.json())
 }

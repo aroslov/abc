@@ -2,13 +2,15 @@ package main
 
 import (
 	"github.com/spf13/viper"
-	"log"
+	log "github.com/Sirupsen/logrus"
 	"github.com/aroslov/abc/util"
 	"github.com/aroslov/abc/xray"
+	"time"
 )
 
 func main() {
 	util.ReadConfig("consumer_config")
+	util.SetupLogging(viper.GetString("log_level"), viper.GetString("log_output"))
 
 	rabbit_endpoint := viper.GetString("rabbit_endpoint")
 	rabbit_exchange := viper.GetString("rabbit_exchange")
@@ -21,7 +23,8 @@ func main() {
 	ch.Qos(fetch_count, 0, false)
 	msgs := util.RabbitMQGetMessages(rabbit_exchange, ch)
 
-	xray := xray.GetJournalService(viper.GetString("xray_base"))
+	xray_service := xray.GetXRayService(viper.GetString("xray_base"),
+		viper.GetString("xray_access_key"), viper.GetString("xray_access_secret"))
 	journal_id := viper.GetString("journal_id")
 	check_timestamp := viper.GetBool("check_timestamp")
 	count := 0
@@ -32,10 +35,10 @@ func main() {
 		for d := range msgs {
 			messages[count] = d.Body
 			count++
-			log.Printf("Messages received: %d", count)
+			log.Debugf("Messages received: %d", count)
 			if (count == fetch_count) {
-				log.Printf("Processing the batch")
-				processMessages(xray, journal_id, messages, check_timestamp)
+				log.Infof("Processing the batch")
+				processMessages(xray_service, journal_id, messages, check_timestamp)
 				d.Ack(true)
 				log.Printf("Ack")
 				count = 0
@@ -43,25 +46,36 @@ func main() {
 
 		}
 	}()
-	log.Printf("Waiting for messages. To exit press CTRL+C")
+	log.Infof("Waiting for messages. To exit press CTRL+C")
 	<-forever
 }
 
-func processMessages(xray *xray.XRayService, journal_id string, messages []([]byte), check_timestamp bool) {
+func processMessages(xray_service *xray.XRayService, journal_id string, messages []([]byte), check_timestamp bool) {
 	for _, message := range messages {
-		record_id := xray.CreateRecord(message)
-		log.Printf("Created record ID %s", record_id)
-		fp := xray.NewFingerprint(message)
-		fp.CreateRecordFingerprint(record_id)
-		log.Printf("Created record ID %s fingerprint", record_id)
-		xray.CommitJournalRecord(journal_id, record_id)
-		log.Printf("Commited record ID %s to journal", record_id)
+		record := xray_service.CreateRecord(message)
+		log.Infof("Created record ID %s", record.Id)
+		fp := xray_service.NewFingerprint(message)
+		fp.CreateRecordFingerprint(record.Id)
+		log.Infof("Created record ID %s fingerprint", record.Id)
+		record.CommitToJournal(journal_id)
+		log.Infof("Commited record ID %s to journal", record.Id)
 	}
 	if check_timestamp {
-		j := xray.GetJournal(journal_id)
-		if !j.HasTimestamp() {
-			util.Fail("No timestamp")
+		j := xray_service.GetJournal(journal_id)
+		n1 := j.NumeberOfTimestamps()
+		j.Timestamp()
+		j = xray_service.GetJournal(journal_id)
+		n2 := j.NumeberOfTimestamps()
+		if (n2 != n1 + 1) {
+			log.Warnf("Unable to confirm timestamp creation, retrying in 10 seconds")
+			time.Sleep(time.Duration(10)*time.Second)
+			j = xray_service.GetJournal(journal_id)
+			n2 := j.NumeberOfTimestamps()
+			if (n2 != n1 + 1) {
+				log.Panicf("Unable to confirm timestamp creation after second attempt")
+			}
 		}
+		log.Infof("Created timestamp, txid: %s", j.Timestamps[n1].Txid)
 	}
 }
 

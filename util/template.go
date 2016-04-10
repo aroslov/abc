@@ -14,7 +14,7 @@ import (
 
 func LoadTemplate(message_template string) []byte {
 	b, err := ioutil.ReadFile(message_template)
-	FailOnError(err, "Unable to read message template file")
+	PanicOnError(err, "Unable to read message template file")
 	return b
 }
 
@@ -55,7 +55,5 @@ func SubstituteTemplate(template []byte) []byte {
 		}
 		s = strings.Replace(s, sub[0], h, 1)
 	}
-
-
 	return []byte(s)
 }

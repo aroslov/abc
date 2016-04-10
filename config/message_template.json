@@ -1,38 +1,34 @@
 {
-  "Records": [
-    {
-      "eventVersion": "2.0",
-      "eventSource": "aws:s3",
-      "awsRegion": "us-east-1",
-      "eventTime": "${timestamp}",
-      "eventName": "ObjectCreated:Put",
-      "userIdentity": {
-        "principalId": "AWS:AIDAJOIF3N7IPSKXQ5CJM"
+  "eventVersion": "2.0",
+  "eventSource": "aws:s3",
+  "awsRegion": "us-east-1",
+  "eventTime": "${timestamp}",
+  "eventName": "ObjectCreated:Put",
+  "userIdentity": {
+    "principalId": "AWS:AIDAJOIF3N7IPSKXQ5CJM"
+  },
+  "requestParameters": {
+    "sourceIPAddress": "149.202.91.210"
+  },
+  "responseElements": {
+    "x-amz-request-id": "AB301EC51ECC7E02",
+    "x-amz-id-2": "1yS3fDURDEX7ny6pEyLGfthJlNuf0kZ6vsRqQJzxv5iX3ep0sR8oAxLMF8ysbrMye410XrzdhRU="
+  },
+  "s3": {
+    "s3SchemaVersion": "1.0",
+    "configurationId": "MyEvents",
+    "bucket": {
+      "name": "awsledger",
+      "ownerIdentity": {
+        "principalId": "A34TOICCJ37L3S"
       },
-      "requestParameters": {
-        "sourceIPAddress": "149.202.91.210"
-      },
-      "responseElements": {
-        "x-amz-request-id": "AB301EC51ECC7E02",
-        "x-amz-id-2": "1yS3fDURDEX7ny6pEyLGfthJlNuf0kZ6vsRqQJzxv5iX3ep0sR8oAxLMF8ysbrMye410XrzdhRU="
-      },
-      "s3": {
-        "s3SchemaVersion": "1.0",
-        "configurationId": "MyEvents",
-        "bucket": {
-          "name": "awsledger",
-          "ownerIdentity": {
-            "principalId": "A34TOICCJ37L3S"
-          },
-          "arn": "arn:aws:s3:::awsledger"
-        },
-        "object": {
-          "key": "${uuid}",
-          "size": ${random_uint_10000000000},
-          "eTag": "${random_hex_32_l}",
-          "sequencer": "${random_hex_18_u}"
-        }
-      }
+      "arn": "arn:aws:s3:::awsledger"
+    },
+    "object": {
+      "key": "${uuid}",
+      "size": ${random_uint_10000000000},
+      "eTag": "${random_hex_32_l}",
+      "sequencer": "${random_hex_18_u}"
     }
-  ]
+  }
 }
