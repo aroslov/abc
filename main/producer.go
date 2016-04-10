@@ -41,7 +41,7 @@ func main() {
 
 func getNumberOfMessages() int {
 	if (len(os.Args) < 2) || os.Args[1] == "" {
-		log.Panicf("Usage: go run generate.go <number of messages to generate>")
+		log.Panicf("Usage: go run producer.go <number of messages to generate>")
 		return 0
 	} else {
 		n, err := strconv.Atoi(os.Args[1])

@@ -11,5 +11,5 @@
 
 * Check config files in /config
 * Run the mock webserver: `go run main/mockserver.go`
-* Run the generator: `go run main/generate.go 10`
-* Run the consumer: `go run main/consume.go`
+* Run the generator: `go run main/producer.go 10`
+* Run the consumer: `go run main/consumer.go`
